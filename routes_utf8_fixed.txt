@@ -1,0 +1,93 @@
+﻿
+  GET|HEAD        / ....... 
+  GET|HEAD        admin/dashboard admin.dΓÇª
+  GET|HEAD        admin/motors admin.motors.index ΓÇ║ MotorController@ΓÇª
+  POST            admin/motors admin.motors.store ΓÇ║ MotorController@ΓÇª
+  GET|HEAD        admin/motors/create admin.motors.create ΓÇ║ MotorContrΓÇª
+  GET|HEAD        admin/motors/export admin.motors.export ΓÇ║ MotorContrΓÇª
+  GET|HEAD        admin/motors/{motor} admin.motors.show ΓÇ║ MotorCoΓÇª
+  PUT|PATCH       admin/motors/{motor} admin.motors.update ΓÇ║ MotorContΓÇª
+  DELETE          admin/motors/{motor} admin.motors.destroy ΓÇ║ MotorContrΓÇª
+  GET|HEAD        admin/motors/{motor}/edit admin.motors.edit ΓÇ║ MoΓÇª
+  POST            admin/motors/{motor}/verify admin.motors.verify ΓÇ║ MoΓÇª
+  GET|HEAD        admin/payments admin.payments.index ΓÇ║ PaymentControlleΓÇª
+  POST            admin/payments admin.payments.store ΓÇ║ PaymentControlleΓÇª
+  GET|HEAD        admin/payments/create admin.payments.create ΓÇ║ PaymentConΓÇª
+  POST            admin/payments/mark-revenue-paid admin.payments.mark-revenue-paid ΓÇ║ PaymentCΓÇª
+  GET|HEAD        admin/payments/{payment} admin.payments.show ΓÇ║ PaymeΓÇª
+  PUT|PATCH       admin/payments/{payment} admin.payments.update ΓÇ║ PaymentΓÇª
+  DELETE          admin/payments/{payment} admin.payments.destroy ΓÇ║ PaymentCΓÇª
+  GET|HEAD        admin/payments/{payment}/edit admin.payments.edit ΓÇ║ ΓÇª
+  GET|HEAD        admin/rentals admin.rentals.index ΓÇ║ RentalControllerΓÇª
+  POST            admin/rentals admin.rentals.store ΓÇ║ RentalControllerΓÇª
+  GET|HEAD        admin/rentals/create admin.rentals.create ΓÇ║ RentalContΓÇª
+  GET|HEAD        admin/rentals/{rental} admin.rentals.show ΓÇ║ RentalΓÇª
+  PUT|PATCH       admin/rentals/{rental} admin.rentals.update ΓÇ║ RentalCoΓÇª
+  DELETE          admin/rentals/{rental} admin.rentals.destroy ΓÇ║ RentalConΓÇª
+  PATCH           admin/rentals/{rental}/complete admin.rentals.complete ΓÇ║ RΓÇª
+  GET|HEAD        admin/rentals/{rental}/edit admin.rentals.edit ΓÇ║ RΓÇª
+  GET|HEAD        admin/reports admin.reports.index ΓÇ║ ReportControllerΓÇª
+  GET|HEAD        admin/reports/export/payment-report admin.reports.export.payment-report ΓÇ║ ReportCoΓÇª
+  GET|HEAD        admin/reports/export/rental-history admin.reports.export.rental-history ΓÇ║ ReportCoΓÇª
+  GET|HEAD        admin/reports/payment-report admin.reports.payment-report ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/reports/registered-motors admin.reports.registered-motors ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/reports/rental-chart admin.reports.rental-chart ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/reports/rental-history admin.reports.rental-history ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/reports/rented-motors admin.reports.rented-motors ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/reports/revenue-sharing admin.reports.revenue-sharing ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/reports/total-revenue admin.reports.total-revenue ΓÇ║ ReportConΓÇª
+  GET|HEAD        admin/users admin.users.index ΓÇ║ UserController@iΓÇª
+  POST            admin/users admin.users.store ΓÇ║ UserController@sΓÇª
+  GET|HEAD        admin/users/create admin.users.create ΓÇ║ UserControΓÇª
+  GET|HEAD        admin/users/{user} admin.users.show ΓÇ║ UserContΓÇª
+  PUT|PATCH       admin/users/{user} admin.users.update ΓÇ║ UserControΓÇª
+  DELETE          admin/users/{user} admin.users.destroy ΓÇ║ UserControlΓÇª
+  GET|HEAD        admin/users/{user}/edit admin.users.edit ΓÇ║ UseΓÇª
+  GET|HEAD        credentials credentΓÇª
+  GET|HEAD        dashboard dashboaΓÇª
+  GET|HEAD        login loΓÇª
+  POST            login AuΓÇª
+  GET|HEAD        login/admin login.admin ΓÇ║ Auth\AuthenticatedSessionController@createAΓÇª
+  GET|HEAD        login/owner login.owner ΓÇ║ Auth\AuthenticatedSessionController@createOΓÇª
+  GET|HEAD        login/renter login.renter ΓÇ║ Auth\AuthenticatedSessionController@createRΓÇª
+  POST            logout lΓÇª
+  GET|HEAD        owner/dashboard owner.dΓÇª
+  GET|HEAD        owner/motors owner.motors.index ΓÇ║ MotorController@ΓÇª
+  POST            owner/motors owner.motors.store ΓÇ║ MotorController@ΓÇª
+  GET|HEAD        owner/motors/create owner.motors.create ΓÇ║ MotorContrΓÇª
+  GET|HEAD        owner/motors/{motor} owner.motors.show ΓÇ║ MotorCoΓÇª
+  PUT|PATCH       owner/motors/{motor} owner.motors.update ΓÇ║ MotorContΓÇª
+  DELETE          owner/motors/{motor} owner.motors.destroy ΓÇ║ MotorContrΓÇª
+  GET|HEAD        owner/motors/{motor}/edit owner.motors.edit ΓÇ║ MoΓÇª
+  GET|HEAD        owner/payments owner.payments.index ΓÇ║ PaymentControlleΓÇª
+  GET|HEAD        owner/payments/{payment} owner.payments.show ΓÇ║ PaymeΓÇª
+  GET|HEAD        owner/rentals owner.rentals.index ΓÇ║ RentalControllerΓÇª
+  GET|HEAD        owner/rentals/{rental} owner.rentals.show ΓÇ║ RentalΓÇª
+  PUT|PATCH       owner/rentals/{rental} owner.rentals.update ΓÇ║ RentalCoΓÇª
+  GET|HEAD        profile ΓÇª
+  PATCH           profile ΓÇª
+  DELETE          profile ΓÇª
+  GET|HEAD        register register ΓÇ║ Auth\RegisteredUserController@creatΓÇª
+  POST            register Auth\RegisteredUserController@storΓÇª
+  GET|HEAD        renter/dashboard renter.ΓÇª
+  GET|HEAD        renter/motors renter.motors.index ΓÇ║ MotorControllerΓÇª
+  GET|HEAD        renter/motors/{motor} renter.motors.show ΓÇ║ MotorCΓÇª
+  GET|HEAD        renter/motors/{motor}/rent renter.rentals.create ΓÇ║ RentΓÇª
+  POST            renter/motors/{motor}/rent renter.rentals.store ΓÇ║ RenΓÇª
+  GET|HEAD        renter/payments renter.payments.index ΓÇ║ PaymentControllΓÇª
+  POST            renter/payments renter.payments.store ΓÇ║ PaymentControllΓÇª
+  GET|HEAD        renter/payments/create renter.payments.create ΓÇ║ PaymentCoΓÇª
+  GET|HEAD        renter/payments/{payment} renter.payments.show ΓÇ║ PaymΓÇª
+  PUT|PATCH       renter/payments/{payment} renter.payments.update ΓÇ║ PaymenΓÇª
+  GET|HEAD        renter/payments/{payment}/edit renter.payments.edit  ΓÇª
+  GET|HEAD        renter/payments/{payment}/receipt renter.payments.receipt  ΓÇª
+  PUT             renter/payments/{payment}/update-payment renter.payments.update-payment ΓÇª
+  GET|HEAD        renter/rentals renter.rentals.index ΓÇ║ RentalControlleΓÇª
+  GET|HEAD        renter/rentals/{rental} renter.rentals.show ΓÇ║ RentaΓÇª
+  POST            renter/rentals/{rental}/cancel renter.rentals.cancel ΓÇ║ ΓÇª
+  POST            renter/rentals/{rental}/return renter.rentals.return ΓÇ║ RentaΓÇª
+  GET|HEAD        storage/{path} storagΓÇª
+  GET|HEAD        up ...... 
+
+        Showing [89] routes
+
