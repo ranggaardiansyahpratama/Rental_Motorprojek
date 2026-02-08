@@ -24,7 +24,7 @@
         }
 
         .sidebar {
-            background: #1f2937;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             width: 250px;
             position: fixed;
@@ -32,6 +32,7 @@
             top: 0;
             z-index: 1000;
             transition: all 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-header {
@@ -47,22 +48,22 @@
             display: flex;
             align-items: center;
             padding: 0.875rem 1.5rem;
-            color: #d1d5db;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.2s ease;
             border-left: 3px solid transparent;
         }
 
         .menu-item:hover {
-            background-color: #374151;
+            background-color: rgba(255, 255, 255, 0.15);
             color: #ffffff;
-            border-left-color: #6366f1;
+            border-left-color: #ffffff;
         }
 
         .menu-item.active {
-            background-color: #4f46e5;
+            background-color: rgba(255, 255, 255, 0.2);
             color: #ffffff;
-            border-left-color: #6366f1;
+            border-left-color: #ffffff;
         }
 
         .menu-item i {
@@ -394,7 +395,7 @@
                 <!-- CRUD Data Cards -->
                 <div class="stat-card">
                     <div class="stat-header">
-                        <div class="stat-icon" style="background: #dbeafe; color: #3b82f6;">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff;">
                             <i class="fas fa-folder"></i>
                         </div>
                         <div>
@@ -410,7 +411,7 @@
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <div class="stat-icon" style="background: #dcfce7; color: #22c55e;">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff;">
                             <i class="fas fa-tasks"></i>
                         </div>
                         <div>
@@ -426,7 +427,7 @@
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <div class="stat-icon" style="background: #fef3c7; color: #f59e0b;">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff;">
                             <i class="fas fa-users"></i>
                         </div>
                         <div>
@@ -442,7 +443,7 @@
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <div class="stat-icon" style="background: #e0e7ff; color: #6366f1;">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff;">
                             <i class="fas fa-chart-bar"></i>
                         </div>
                         <div>
@@ -473,7 +474,7 @@
                     <div class="mb-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="stat-icon mr-3" style="background: #fef3c7; color: #f59e0b; width: 40px; height: 40px;">
+                                <div class="stat-icon mr-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; width: 40px; height: 40px;">
                                     <i class="fas fa-exclamation-triangle"></i>
                                 </div>
                                 <div>
@@ -492,7 +493,7 @@
                     <div class="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="stat-icon mr-3" style="background: #dbeafe; color: #3b82f6; width: 40px; height: 40px;">
+                                <div class="stat-icon mr-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; width: 40px; height: 40px;">
                                     <i class="fas fa-credit-card"></i>
                                 </div>
                                 <div>
@@ -583,13 +584,13 @@
                             <div class="text-2xl font-bold">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
                             <div class="text-blue-100">Total Komisi Platform</div>
                         </div>
-                        <div class="text-center p-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg">
-                            <div class="text-2xl font-bold">Rp {{ number_format($ownerRevenue ?? 0, 0, ',', '.') }}</div>
-                            <div class="text-green-100">Bagi Hasil Pemilik (80%)</div>
-                        </div>
                         <div class="text-center p-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg">
+                            <div class="text-2xl font-bold">Rp {{ number_format($ownerRevenue ?? 0, 0, ',', '.') }}</div>
+                            <div class="text-purple-100">Bagi Hasil Pemilik (80%)</div>
+                        </div>
+                        <div class="text-center p-4 bg-gradient-to-r from-indigo-500 to-blue-600 text-white rounded-lg">
                             <div class="text-2xl font-bold">Rp {{ number_format($adminRevenue ?? 0, 0, ',', '.') }}</div>
-                            <div class="text-purple-100">Komisi Admin (20%)</div>
+                            <div class="text-indigo-100">Komisi Admin (20%)</div>
                         </div>
                     </div>
                 </div>

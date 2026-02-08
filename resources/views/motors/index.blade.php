@@ -158,7 +158,7 @@
                                 View
                             </a>
                             
-                            @can('update', $motor)
+                            @if(auth()->user()->isAdmin() || ($motor->owner_id === auth()->id() && $motor->status !== 'rented'))
                             <a href="{{ route(auth()->user()->role . '.motors.edit', $motor) }}" 
                                class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-green-700 bg-green-100 hover:bg-green-200 rounded-md transition-colors">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,9 +166,9 @@
                                 </svg>
                                 Edit
                             </a>
-                            @endcan
+                            @endif
 
-                            @can('delete', $motor)
+                            @if(auth()->user()->isAdmin() || ($motor->owner_id === auth()->id() && $motor->status !== 'rented'))
                             <button type="button" 
                                     onclick="deleteMotor({{ $motor->id }})"
                                     class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-700 bg-red-100 hover:bg-red-200 rounded-md transition-colors">
@@ -177,7 +177,7 @@
                                 </svg>
                                 Delete
                             </button>
-                            @endcan
+                            @endif
 
                             @if($motor->status === 'available' && auth()->user()->isAdmin())
                             <button type="button" 

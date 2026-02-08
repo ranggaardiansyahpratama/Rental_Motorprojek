@@ -187,12 +187,12 @@ Route::middleware('guest')->group(function () {
                 ->name('login.renter');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
-    
-    // Credentials info page
-    Route::get('credentials', function () {
-        return view('credentials');
-    })->name('credentials');
 });
+
+// Credentials info page - accessible by anyone
+Route::get('credentials', function () {
+    return view('credentials');
+})->name('credentials');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

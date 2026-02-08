@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
         <!-- Font Awesome for icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -17,50 +17,98 @@
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
         
         <style>
-            .btn-renter {
-                background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-                box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+            body {
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+            }
+
+            .btn-login {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
                 transition: all 0.3s ease;
             }
-            .btn-renter:hover {
-                background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
-                transform: translateY(-1px);
+            
+            .btn-login:hover {
+                background: linear-gradient(135deg, #5568d3 0%, #6a4291 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
             }
+            
             .card {
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-                border-radius: 12px;
+                background: white;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
             }
-            .logo-float {
+            
+            .logo-container {
                 animation: float 3s ease-in-out infinite;
             }
+            
             @keyframes float {
-                0% { transform: translateY(0px); }
-                50% { transform: translateY(-5px); }
-                100% { transform: translateY(0px); }
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+
+            .input-field {
+                transition: all 0.3s ease;
+                border: 2px solid #e5e7eb;
+            }
+            
+            .input-field:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                outline: none;
+            }
+
+            .icon-wrapper {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+                margin: 0 auto 1.5rem;
+            }
+
+            .link-register {
+                color: #667eea;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .link-register:hover {
+                color: #5568d3;
+                text-decoration: underline;
             }
         </style>
     </head>
-    <body class="bg-blue-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+    <body>
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4">
             <!-- Logo -->
-            <div class="mb-8 text-center">
-                <div class="inline-flex items-center text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2 logo-float">
-                    <i class="fas fa-motorcycle mr-3"></i>
-                    RentMotor
+            <div class="mb-8 text-center logo-container">
+                <div class="icon-wrapper">
+                    <i class="fas fa-motorcycle"></i>
                 </div>
-                <p class="text-gray-600 dark:text-gray-400">Penyewaan Motor Terpercaya</p>
+                <h1 class="text-4xl font-bold text-white mb-2">RentMotor</h1>
+                <p class="text-blue-100">Penyewaan Motor Terpercaya</p>
             </div>
 
             <!-- Login Card -->
-            <div class="w-full sm:max-w-md mt-6 px-8 py-8 bg-white dark:bg-gray-800 card overflow-hidden">
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Login Penyewa</h2>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Selamat datang kembali!</p>
+            <div class="w-full sm:max-w-md card overflow-hidden p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900">Login Penyewa</h2>
+                    <p class="mt-2 text-sm text-gray-600">Selamat datang kembali!</p>
                 </div>
 
                 @if (session('status'))
-                    <div class="mb-4 p-3 rounded-md bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm">
-                        {{ session('status') }}
+                    <div class="mb-4 p-4 rounded-lg bg-green-50 text-green-700 text-sm border border-green-200">
+                        <i class="fas fa-check-circle mr-2"></i>{{ session('status') }}
                     </div>
                 @endif
 
@@ -68,36 +116,42 @@
                     @csrf
                     <input type="hidden" name="intended_role" value="renter">
 
-                    <div class="mb-4">
-                        <label for="email" class="block font-medium text-sm text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:text-white">
-                        @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <div class="mb-5">
+                        <label for="email" class="block font-medium text-sm text-gray-700 mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-600"></i>Email
+                        </label>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus 
+                               class="input-field w-full px-4 py-3 rounded-lg">
+                        @error('email') <p class="mt-2 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p> @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="password" class="block font-medium text-sm text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                        <input id="password" type="password" name="password" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:text-white">
-                        @error('password') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                        <label for="password" class="block font-medium text-sm text-gray-700 mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-600"></i>Password
+                        </label>
+                        <input id="password" type="password" name="password" required 
+                               class="input-field w-full px-4 py-3 rounded-lg">
+                        @error('password') <p class="mt-2 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p> @enderror
                     </div>
 
                     <div class="mb-6">
-                        <button type="submit" class="btn-renter w-full py-3 px-4 rounded-lg font-semibold text-white uppercase tracking-wider">
-                            <i class="fas fa-sign-in-alt mr-2"></i> Masuk Sekarang
+                        <button type="submit" class="btn-login w-full py-4 px-4 rounded-lg font-semibold text-white text-lg">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Masuk Sekarang
                         </button>
                     </div>
 
-                    <div class="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Baru di RentMotor?</p>
-                        <a href="{{ route('register') }}" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">
-                            Daftar sebagai Penyewa
+                    <div class="text-center pt-4 border-t border-gray-200">
+                        <p class="text-sm text-gray-600 mb-3">Baru di RentMotor?</p>
+                        <a href="{{ route('register') }}" class="link-register text-base">
+                            <i class="fas fa-user-plus mr-1"></i>Daftar sebagai Penyewa
                         </a>
                     </div>
                 </form>
             </div>
             
-            <div class="mt-4 text-center">
-                <a href="{{ url('/') }}" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                    <i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda
+            <div class="mt-6 text-center">
+                <a href="{{ url('/') }}" class="text-sm text-white hover:text-blue-100 transition">
+                    <i class="fas fa-arrow-left mr-2"></i>Kembali ke Beranda
                 </a>
             </div>
         </div>
