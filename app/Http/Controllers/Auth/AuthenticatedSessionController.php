@@ -16,7 +16,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        $availableMotors = \App\Models\Motor::where('status', 'available')->latest()->limit(6)->get();
+        return view('auth.login', compact('availableMotors'));
     }
 
     /**

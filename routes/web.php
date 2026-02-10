@@ -6,20 +6,21 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // Redirect langsung ke login jika belum authenticated
-    if (!auth()->check()) {
-        return redirect()->route('login');
+    // Jika sudah login, redirect ke dashboard sesuai role
+    if (auth()->check()) {
+        $user = auth()->user();
+        if ($user->isOwner()) {
+            return redirect()->route('owner.dashboard');
+        } elseif ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        } else {
+            return redirect()->route('renter.dashboard');
+        }
     }
     
-    // Jika sudah login, redirect ke dashboard sesuai role
-    $user = auth()->user();
-    if ($user->isOwner()) {
-        return redirect()->route('owner.dashboard');
-    } elseif ($user->isAdmin()) {
-        return redirect()->route('admin.dashboard');
-    } else {
-        return redirect()->route('renter.dashboard');
-    }
+    // Untuk guest, tampilkan halaman welcome dengan data motor
+    $availableMotors = \App\Models\Motor::where('status', 'available')->latest()->limit(6)->get();
+    return view('welcome', compact('availableMotors'));
 });
 
 Route::get('/dashboard', function () {

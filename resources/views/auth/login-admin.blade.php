@@ -9,8 +9,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
-        <!-- Font Awesome for icons -->
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
         <!-- Scripts -->
@@ -19,127 +18,195 @@
         <style>
             body {
                 font-family: 'Inter', sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background-color: #f8fafc;
                 min-height: 100vh;
-            }
-
-            .btn-login {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-                transition: all 0.3s ease;
-            }
-            
-            .btn-login:hover {
-                background: linear-gradient(135deg, #5568d3 0%, #6a4291 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
-            }
-            
-            .card {
-                background: white;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                border-radius: 20px;
-                backdrop-filter: blur(10px);
-            }
-            
-            .logo-container {
-                animation: float 3s ease-in-out infinite;
-            }
-            
-            @keyframes float {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-10px); }
-            }
-
-            .input-field {
-                transition: all 0.3s ease;
-                border: 2px solid #e5e7eb;
-            }
-            
-            .input-field:focus {
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-                outline: none;
-            }
-
-            .icon-wrapper {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                width: 80px;
-                height: 80px;
-                border-radius: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 2.5rem;
-                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-                margin: 0 auto 1.5rem;
+                background-image: 
+                    radial-gradient(at 0% 0%, rgba(59, 91, 219, 0.15) 0, transparent 50%), 
+                    radial-gradient(at 100% 100%, rgba(59, 91, 219, 0.1) 0, transparent 50%);
+            }
+
+            .login-container {
+                display: flex;
+                width: 100%;
+                max-width: 900px;
+                background: white;
+                border-radius: 32px;
+                box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+                margin: 20px;
+            }
+
+            .login-aside {
+                flex: 1;
+                background-color: #3b5bdb;
+                background-image: url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+                background-size: cover;
+                background-position: center;
+                position: relative;
+                display: none;
+            }
+
+            @media (min-width: 768px) {
+                .login-aside { display: block; }
+            }
+
+            .aside-overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(225deg, rgba(59, 91, 219, 0.8) 0%, rgba(59, 91, 219, 0.95) 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 3rem;
+                color: white;
+            }
+
+            .login-form-area {
+                flex: 1;
+                padding: 3.5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .form-input {
+                border: 2px solid #f1f5f9;
+                background-color: #f8fafc;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 16px;
+                padding: 0.875rem 1.25rem;
+                font-size: 0.95rem;
+            }
+
+            .form-input:focus {
+                border-color: #3b5bdb;
+                background-color: white;
+                box-shadow: 0 10px 20px -5px rgba(59, 91, 219, 0.15);
+                outline: none;
+            }
+
+            .btn-submit {
+                background-color: #3b5bdb;
+                color: white;
+                font-weight: 700;
+                padding: 1rem;
+                border-radius: 16px;
+                transition: all 0.3s;
+                letter-spacing: 0.5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .btn-submit:hover {
+                background-color: #2d46b9;
+                transform: translateY(-2px);
+                box-shadow: 0 20px 40px -10px rgba(59, 91, 219, 0.4);
+            }
+
+            .password-toggle {
+                position: absolute;
+                right: 1.25rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #94a3b8;
+                cursor: pointer;
+                padding: 5px;
+            }
+
+            .brand-dot {
+                width: 8px;
+                height: 8px;
+                background-color: white;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 8px;
             }
         </style>
     </head>
     <body>
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4">
-            <!-- Logo -->
-            <div class="mb-8 text-center logo-container">
-                <div class="icon-wrapper">
-                    <i class="fas fa-user-shield"></i>
+        <div class="login-container">
+            <!-- Left Side: Visual -->
+            <div class="login-aside">
+                <div class="aside-overlay">
+                    <div class="mb-12">
+                        <div class="flex items-center text-sm font-bold tracking-widest uppercase mb-4 opacity-80">
+                            <span class="brand-dot"></span> Admin Control
+                        </div>
+                        <h2 class="text-4xl font-extrabold leading-tight">Kelola Sistem<br>dengan Lebih Baik.</h2>
+                    </div>
+                    <p class="text-blue-100 opacity-70 text-sm leading-relaxed max-w-xs">
+                        Akses dashboard administrator untuk memantau trafik, keuangan, dan manajemen armada secara real-time.
+                    </p>
                 </div>
-                <h1 class="text-4xl font-bold text-white mb-2">Admin Portal</h1>
-                <p class="text-blue-100">Rental Motor System Management</p>
             </div>
 
-            <!-- Login Card -->
-            <div class="w-full sm:max-w-md card overflow-hidden p-8">
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-900">Selamat Datang Kembali</h2>
-                    <p class="mt-2 text-sm text-gray-600">Masuk untuk mengakses dashboard admin</p>
+            <!-- Right Side: Form -->
+            <div class="login-form-area">
+                <div class="mb-10">
+                    <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Selamat Datang</h1>
+                    <p class="text-gray-400 font-medium">Silakan masuk ke akun administrator Anda.</p>
                 </div>
 
                 @if (session('status'))
-                    <div class="mb-4 p-4 rounded-lg bg-green-50 text-green-700 text-sm border border-green-200">
-                        <i class="fas fa-check-circle mr-2"></i>{{ session('status') }}
+                    <div class="mb-6 p-4 rounded-2xl bg-green-50 text-green-700 text-sm font-medium border border-green-100">
+                        {{ session('status') }}
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('login') }}" class="space-y-6">
                     @csrf
                     <input type="hidden" name="intended_role" value="admin">
 
-                    <div class="mb-5">
-                        <label for="email" class="block font-medium text-sm text-gray-700 mb-2">
-                            <i class="fas fa-envelope mr-2 text-blue-600"></i>Email
-                        </label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus 
-                               class="input-field w-full px-4 py-3 rounded-lg">
-                        @error('email') <p class="mt-2 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p> @enderror
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">Alamat Email</label>
+                        <div class="relative">
+                            <input type="email" name="email" value="{{ old('email') }}" required autofocus 
+                                   placeholder="email@admin.com"
+                                   class="form-input w-full pl-5">
+                        </div>
+                        @error('email') <p class="mt-2 text-xs font-bold text-red-500">{{ $message }}</p> @enderror
                     </div>
 
-                    <div class="mb-6">
-                        <label for="password" class="block font-medium text-sm text-gray-700 mb-2">
-                            <i class="fas fa-lock mr-2 text-blue-600"></i>Password
-                        </label>
-                        <input id="password" type="password" name="password" required 
-                               class="input-field w-full px-4 py-3 rounded-lg">
-                        @error('password') <p class="mt-2 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p> @enderror
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">Kata Sandi</label>
+                        <div class="relative">
+                            <input id="password" type="password" name="password" required 
+                                   placeholder="••••••••"
+                                   class="form-input w-full pl-5 pr-12">
+                            <span class="password-toggle" onclick="togglePassword()">
+                                <i id="eye-icon" class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        @error('password') <p class="mt-2 text-xs font-bold text-red-500">{{ $message }}</p> @enderror
                     </div>
 
-                    <div class="mb-6">
-                        <button type="submit" class="btn-login w-full py-4 px-4 rounded-lg font-semibold text-white text-lg">
-                            <i class="fas fa-sign-in-alt mr-2"></i>Masuk Dashboard
-                        </button>
-                    </div>
-                    
-                    <div class="text-center text-xs text-gray-500 pt-4 border-t border-gray-200">
-                        <i class="fas fa-shield-alt mr-1"></i>© {{ date('Y') }} RentMotor. Secure Admin Access.
-                    </div>
+                    <button type="submit" class="btn-submit w-full mt-4">
+                        Masuk Dashboard <i class="fas fa-arrow-right text-xs"></i>
+                    </button>
                 </form>
             </div>
-            
-            <div class="mt-6 text-center">
-                <a href="{{ url('/') }}" class="text-sm text-white hover:text-blue-100 transition">
-                    <i class="fas fa-arrow-left mr-2"></i>Kembali ke Beranda
-                </a>
-            </div>
         </div>
+
+        <script>
+            function togglePassword() {
+                const passwordInput = document.getElementById('password');
+                const eyeIcon = document.getElementById('eye-icon');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                }
+            }
+        </script>
     </body>
 </html>

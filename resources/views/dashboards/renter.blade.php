@@ -6,637 +6,515 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Penyewa - RentMotor</title>
     
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3), 0 2px 4px -1px rgba(59, 130, 246, 0.2);
-            transition: all 0.3s ease;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f7fa;
+            color: #1a202c;
         }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.2);
+
+        .glass-sidebar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(226, 232, 240, 0.8);
         }
-        
-        .card {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+        .sidebar-link {
+            display: flex;
+            items: center;
+            padding: 0.875rem 1.25rem;
+            margin: 0.25rem 0.5rem;
             border-radius: 12px;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-link i {
+            width: 1.5rem;
+            font-size: 1.1rem;
+            margin-right: 0.75rem;
+            text-align: center;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            color: #3182ce;
+            background: #ebf8ff;
+        }
+
+        .sidebar-link.active {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-nexus {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-nexus:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06);
+        }
+
+        .motor-image-container {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        .motor-price-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(49, 130, 206, 0.9);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 14px 0 rgba(49, 130, 206, 0.3);
             transition: all 0.3s ease;
         }
-        
-        .card:hover {
+
+        .btn-action-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
         }
-        
-        .motor-card {
-            transition: all 0.3s ease;
+
+        .status-pill {
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        
-        .motor-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f7fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+        .dashboard-main {
+            margin-left: 280px;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-main { margin-left: 0; }
+            .sidebar-nav { display: none; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-50 text-gray-800"
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{{ route('renter.dashboard') }}" class="text-2xl font-bold text-blue-600">
-                        Rental Motor
-                    </a>
-                    <div class="ml-10 flex space-x-8">
-                        <a href="{{ route('renter.dashboard') }}" class="text-blue-600 border-b-2 border-blue-600 px-1 pt-1 text-sm font-medium">Dashboard</a>
-                        <a href="{{ route('renter.motors.index') }}" class="text-gray-500 hover:text-blue-600 px-1 pt-1 text-sm font-medium transition">Browse Motor</a>
-                        <a href="{{ route('renter.rentals.index') }}" class="text-gray-500 hover:text-blue-600 px-1 pt-1 text-sm font-medium transition">Penyewaan Saya</a>
-                        <a href="#" class="text-gray-500 hover:text-blue-600 px-1 pt-1 text-sm font-medium transition">Riwayat</a>
-                    </div>
+<body class="bg-gray-50">
+
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar-nav fixed top-0 left-0 h-screen w-[280px] glass-sidebar z-50 flex flex-col p-6">
+        <div class="flex items-center space-x-3 mb-12 px-4">
+            <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg">
+                <i class="fas fa-motorcycle text-xl"></i>
+            </div>
+            <span class="text-xl font-extrabold tracking-tighter">RENTMOTOR</span>
+        </div>
+
+        <div class="flex-1 space-y-2">
+            <button onclick="switchTab('overview')" class="sidebar-link active w-full text-left" id="tab-overview">
+                <i class="fas fa-th-large"></i> Ringkasan
+            </button>
+            <button onclick="switchTab('browse')" class="sidebar-link w-full text-left" id="tab-browse">
+                <i class="fas fa-search"></i> Cari Motor (Pesan)
+            </button>
+            <button onclick="switchTab('rentals')" class="sidebar-link w-full text-left" id="tab-rentals">
+                <i class="fas fa-clock"></i> Penyewaan Aktif
+            </button>
+            <button onclick="switchTab('history')" class="sidebar-link w-full text-left" id="tab-history">
+                <i class="fas fa-history"></i> Riwayat & Laporan
+            </button>
+            <button onclick="switchTab('payments')" class="sidebar-link w-full text-left" id="tab-payments">
+                <i class="fas fa-credit-card"></i> Pembayaran
+            </button>
+        </div>
+
+        <div class="pt-8 border-t border-gray-100 mt-auto">
+            <div class="bg-white rounded-2xl p-4 border border-gray-50 shadow-sm flex items-center mb-6">
+                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mr-3 font-bold">
+                    {{ substr(Auth::user()->name, 0, 1) }}
                 </div>
-                
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
-                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">PENYEWA</span>
-                    <a href="{{ route('profile.edit') }}" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-lg text-sm transition">
-                        <i class="fas fa-user mr-1"></i>Profil
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="btn-primary px-4 py-2 rounded-lg text-sm">
-                            <i class="fas fa-sign-out-alt mr-1"></i>Logout
-                        </button>
-                    </form>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold truncate">{{ Auth::user()->name }}</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase">Penyewa</p>
                 </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-2">
+                <a href="{{ route('profile.edit') }}" class="text-[10px] font-bold text-gray-500 hover:text-blue-600 text-center py-2 bg-gray-50 rounded-lg transition">PROFIL</a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full text-[10px] font-bold text-red-500 hover:text-red-700 text-center py-2 bg-red-50 rounded-lg transition">LOGOUT</button>
+                </form>
             </div>
         </div>
-    </nav>
+    </aside>
 
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 card">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div class="text-center">
-                    <h1 class="text-4xl font-bold text-white mb-2">Dashboard Penyewa Motor</h1>
-                    <p class="text-blue-100 text-lg">Selamat datang kembali, {{ auth()->user()->name }}!</p>
-                    <p class="text-blue-200 text-sm mt-2">Kelola penyewaan motor Anda dengan mudah dan aman</p>
-                </div>
-            </div>
-        </div>    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Mobile Header -->
+    <header class="lg:hidden bg-white border-b border-gray-100 p-4 sticky top-0 z-[60] flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-motorcycle text-blue-600 text-lg"></i>
+            <span class="font-extrabold text-lg">RENTMOTOR</span>
+        </div>
+        <button class="text-gray-500"><i class="fas fa-bars"></i></button>
+    </header>
+
+    <main class="dashboard-main min-h-screen p-6 lg:p-10">
         
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-blue-100">
-                        <i class="fas fa-motorcycle text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total Penyewaan</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $totalRentals }}</p>
-                    </div>
+        <!-- SECTION: OVERVIEW -->
+        <section id="section-overview" class="tab-content transition-all duration-500">
+            <div class="mb-10 flex flex-col md:flex-row justify-between md:items-end gap-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Halo, {{ explode(' ', auth()->user()->name)[0] }}! 👋</h1>
+                    <p class="text-gray-500 font-medium">Selamat datang di pusat kendali penyewaan Anda.</p>
                 </div>
+                <button onclick="switchTab('browse')" class="btn-action-primary">
+                    <i class="fas fa-plus mr-2"></i> Buat Penyewaan Baru
+                </button>
             </div>
-            
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100">
-                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Sewa Aktif</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $activeRentals }}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-yellow-100">
-                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Pembayaran Tertunda</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $pendingPayments }}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100">
-                        <i class="fas fa-money-bill-wave text-purple-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total Pengeluaran</p>
-                        <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($totalSpent, 0, ',', '.') }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Aksi Cepat</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button onclick="showBrowseMotors()" class="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition cursor-pointer">
-                    <i class="fas fa-search text-blue-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-blue-900">Cari Motor</span>
-                </button>
-                
-                <button onclick="showRentalPackages()" class="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition cursor-pointer">
-                    <i class="fas fa-calendar-alt text-green-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-green-900">Paket Sewa</span>
-                </button>
-                
-                <button onclick="showRentalHistory()" class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition cursor-pointer">
-                    <i class="fas fa-history text-purple-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-purple-900">Riwayat Sewa</span>
-                </button>
-                
-                <button onclick="showPaymentStatus()" class="flex flex-col items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition cursor-pointer">
-                    <i class="fas fa-credit-card text-orange-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-orange-900">Status Pembayaran</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Browse Motors Section -->
-        <div id="browse-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-gray-900">Cari & Sewa Motor</h2>
-                <button onclick="resetFilters()" class="text-blue-600 hover:text-blue-800">Reset Filter</button>
-            </div>
-            
-            <!-- Filters -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Merk Motor</label>
-                    <select id="brand-filter" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua Merk</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Yamaha">Yamaha</option>
-                        <option value="Suzuki">Suzuki</option>
-                        <option value="Kawasaki">Kawasaki</option>
-                        <option value="TVS">TVS</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipe CC</label>
-                    <select id="cc-filter" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua Tipe</option>
-                        <option value="100cc">100cc</option>
-                        <option value="125cc">125cc</option>
-                        <option value="150cc">150cc</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Harga Maksimal/Hari</label>
-                    <input type="number" id="price-filter" placeholder="Contoh: 50000" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-            </div>
-            
-            <!-- Motor Grid -->
-            <div id="motors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($availableMotors as $motor)
-                <div class="motor-card border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition" data-brand="{{ $motor->brand }}" data-type="{{ $motor->type }}" data-price="{{ $motor->rental_price }}">
-                    <div class="h-48 bg-gray-100 flex items-center justify-center">
-                        @if($motor->photo)
-                            <img src="{{ asset('storage/' . $motor->photo) }}" alt="{{ $motor->brand }} {{ $motor->type }}" class="w-full h-full object-cover">
-                        @else
-                            <i class="fas fa-motorcycle text-4xl text-gray-400"></i>
-                        @endif
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="card-nexus p-6 border-l-4 border-blue-500">
+                    <p class="text-[10px] font-black font-bold text-gray-400 uppercase tracking-widest mb-1">Total Sewa</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl font-black">{{ $totalRentals }}</span>
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center"><i class="fas fa-motorcycle"></i></div>
                     </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg text-gray-900">{{ $motor->brand }} {{ $motor->type }}</h3>
-                        <p class="text-gray-600 text-sm">{{ $motor->year }} • {{ $motor->color }} • {{ $motor->license_plate }}</p>
-                        <p class="text-gray-700 mt-2 text-sm">{{ Str::limit($motor->description, 80) }}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp {{ number_format($motor->rental_price, 0, ',', '.') }}</span>
-                                <span class="text-gray-500 text-sm">/hari</span>
+                </div>
+                <div class="card-nexus p-6 border-l-4 border-green-500">
+                    <p class="text-[10px] font-black font-bold text-gray-400 uppercase tracking-widest mb-1">Sewa Aktif</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl font-black text-green-600">{{ $activeRentals }}</span>
+                        <div class="w-10 h-10 bg-green-50 text-green-600 rounded-lg flex items-center justify-center"><i class="fas fa-check-circle"></i></div>
+                    </div>
+                </div>
+                <div class="card-nexus p-6 border-l-4 border-yellow-500">
+                    <p class="text-[10px] font-black font-bold text-gray-400 uppercase tracking-widest mb-1">Butuh Bayar</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl font-black text-yellow-600">{{ $pendingPayments }}</span>
+                        <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-lg flex items-center justify-center"><i class="fas fa-file-invoice-dollar"></i></div>
+                    </div>
+                </div>
+                <div class="card-nexus p-6 border-l-4 border-indigo-500">
+                    <p class="text-[10px] font-black font-bold text-gray-400 uppercase tracking-widest mb-1">Total Pengeluaran</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-black">Rp {{ number_format($totalSpent/1000, 0) }}k</span>
+                        <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center"><i class="fas fa-wallet"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <!-- Recent Activity -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Aktifitas Terkini</h2>
+                        <button onclick="switchTab('history')" class="text-xs font-bold text-blue-600 hover:underline">Lihat Semua</button>
+                    </div>
+                    <div class="space-y-4">
+                        @forelse($myRentals->take(3) as $r)
+                        <div class="card-nexus p-5 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 mr-4">
+                                    <i class="fas fa-motorcycle text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">{{ $r->motor->brand }} {{ $r->motor->type }}</h4>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase">{{ $r->created_at->diffForHumans() }}</p>
+                                </div>
                             </div>
-                            <button onclick="openRentalModal({{ $motor->id }})" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                                Sewa Sekarang
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Rental Packages Section -->
-        <div id="packages-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200" style="display: none;">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Paket Penyewaan</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Daily Package -->
-                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                    <div class="text-center">
-                        <i class="fas fa-calendar-day text-blue-600 text-3xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Paket Harian</h3>
-                        <p class="text-gray-600 mb-4">Sewa motor untuk 1-6 hari</p>
-                        <div class="bg-blue-50 rounded-lg p-4 mb-4">
-                            <p class="text-sm text-blue-800">Harga Normal</p>
-                            <p class="text-gray-600 text-sm">Tanpa diskon khusus</p>
-                        </div>
-                        <ul class="text-left text-sm text-gray-600 space-y-2">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Fleksibel untuk sewa singkat</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Pembayaran per hari</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Cocok untuk keperluan mendadak</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Weekly Package -->
-                <div class="border border-blue-200 rounded-lg p-6 bg-blue-50 hover:shadow-lg transition relative">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Populer</span>
-                    </div>
-                    <div class="text-center">
-                        <i class="fas fa-calendar-week text-blue-600 text-3xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Paket Mingguan</h3>
-                        <p class="text-gray-600 mb-4">Sewa motor untuk 7-29 hari</p>
-                        <div class="bg-white rounded-lg p-4 mb-4">
-                            <p class="text-lg font-bold text-blue-600">Diskon 10%</p>
-                            <p class="text-gray-600 text-sm">dari harga harian</p>
-                        </div>
-                        <ul class="text-left text-sm text-gray-600 space-y-2">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Hemat 10% dari harga harian</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Cocok untuk liburan panjang</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Pembayaran bisa dicicil</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Monthly Package -->
-                <div class="border border-green-200 rounded-lg p-6 bg-green-50 hover:shadow-lg transition relative">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Hemat</span>
-                    </div>
-                    <div class="text-center">
-                        <i class="fas fa-calendar text-green-600 text-3xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Paket Bulanan</h3>
-                        <p class="text-gray-600 mb-4">Sewa motor 30+ hari</p>
-                        <div class="bg-white rounded-lg p-4 mb-4">
-                            <p class="text-lg font-bold text-green-600">Diskon 20%</p>
-                            <p class="text-gray-600 text-sm">dari harga harian</p>
-                        </div>
-                        <ul class="text-left text-sm text-gray-600 space-y-2">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Hemat 20% dari harga harian</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Ideal untuk kebutuhan jangka panjang</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Prioritas maintenance</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Current Rentals -->
-        @if($myRentals->count() > 0)
-        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Penyewaan Terkini</h2>
-            <div class="space-y-4">
-                @foreach($myRentals as $rental)
-                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-gray-900">{{ $rental->motor->brand }} {{ $rental->motor->type }}</h3>
-                            <p class="text-gray-600 text-sm">{{ $rental->start_date->format('d M Y') }} - {{ $rental->end_date->format('d M Y') }}</p>
-                            <p class="text-gray-600 text-sm">{{ $rental->duration_days }} hari • Rp {{ number_format($rental->total_amount, 0, ',', '.') }}</p>
-                        </div>
-                        <div class="flex flex-col items-end space-y-2">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium {{ $rental->status_badge }}">
-                                {{ ucfirst(str_replace('_', ' ', $rental->status)) }}
+                            <span class="status-pill {{ $r->status == 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
+                                {{ $r->status }}
                             </span>
-                            @if($rental->status === 'pending_payment')
-                                <a href="{{ route('renter.payments.create', ['rental_id' => $rental->id]) }}" class="text-blue-600 hover:text-blue-800 text-sm">
-                                    Bayar Sekarang
-                                </a>
-                            @endif
                         </div>
+                        @empty
+                        <div class="card-nexus p-10 text-center text-gray-400">Belum ada aktifitas penyewaan.</div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Tips / Card -->
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Panduan Aman</h2>
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl">
+                        <div class="relative z-10">
+                            <i class="fas fa-shield-alt text-4xl mb-4 opacity-30"></i>
+                            <h3 class="text-lg font-bold mb-2 leading-tight">Selalu Gunakan Helm & Patuhi Aturan Lalu Lintas</h3>
+                            <p class="text-xs text-blue-100 mb-6">Pastikan unit motor dalam kondisi baik sebelum membawa berkendara jauh.</p>
+                            <a href="#" class="text-[10px] font-bold uppercase tracking-widest bg-white text-blue-800 px-4 py-2 rounded-full inline-block">Pelajari Lanjut</a>
+                        </div>
+                        <i class="fas fa-motorcycle absolute -bottom-4 -right-4 text-7xl opacity-10 transform -rotate-12"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: BROWSE MOTORS -->
+        <section id="section-browse" class="tab-content hidden">
+            <div class="mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Cari Motor</h2>
+                <p class="text-gray-500 font-medium">Temukan unit yang sesuai dengan kebutuhan perjalanan Anda.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($availableMotors as $motor)
+                <div class="card-nexus group overflow-hidden">
+                    <div class="motor-image-container bg-gray-100">
+                        @if($motor->photo)
+                            <img src="{{ asset('storage/' . $motor->photo) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center text-gray-300"><i class="fas fa-motorcycle text-4xl"></i></div>
+                        @endif
+                        <div class="motor-price-badge">Rp {{ number_format($motor->rental_price/1000, 0) }}k/hari</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-gray-900 mb-1">{{ $motor->brand }} {{ $motor->type }}</h4>
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-6">{{ $motor->year }} • {{ $motor->color }}</p>
+                        <button onclick="openBooking('{{ $motor->id }}', '{{ $motor->brand }} {{ $motor->type }}', {{ $motor->rental_price }})" class="w-full btn-action-primary text-xs tracking-widest uppercase">
+                            PESAN SEKARANG
+                        </button>
                     </div>
                 </div>
                 @endforeach
             </div>
-        </div>
-        @endif
+        </section>
 
-        <!-- Rental History Section -->
-        <div id="history-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200" style="display: none;">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-gray-900">Riwayat Penyewaan</h2>
-                <a href="{{ route('renter.rentals.index') }}" class="text-blue-600 hover:text-blue-800">Lihat Semua</a>
+        <!-- SECTION: RENTALS (ACTIVE) -->
+        <section id="section-rentals" class="tab-content hidden">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-10">Penyewaan Aktif</h2>
+            <div class="space-y-6">
+                @forelse($myRentals->where('status', 'active') as $r)
+                <div class="card-minimal p-8 flex flex-col lg:flex-row justify-between lg:items-center gap-8 border-l-8 border-green-500">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-3xl">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-gray-900">{{ $r->motor->brand }} {{ $r->motor->type }}</h3>
+                            <div class="flex items-center text-sm font-bold text-gray-500 mt-1">
+                                <span class="bg-gray-100 px-3 py-1 rounded-lg mr-3">{{ strtoupper($r->motor->license_plate) }}</span>
+                                <i class="fas fa-calendar-alt mr-2"></i> {{ $r->start_date->format('d M') }} - {{ $r->end_date->format('d M Y') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex lg:flex-col items-end gap-3">
+                        <p class="text-[10px] font-black font-bold text-gray-400 uppercase tracking-widest">Sisa Waktu</p>
+                        <span class="text-xl font-bold text-blue-600">{{ $r->end_date->diffInDays(now()) }} Hari Lagi</span>
+                        <a href="{{ route('renter.rentals.show', $r) }}" class="text-sm font-bold text-gray-900 hover:text-blue-600 transition">Detail Kontrak <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                @empty
+                <div class="card-nexus p-20 text-center text-gray-400 italic">Tidak ada penyewaan motor yang aktif saat ini.</div>
+                @endforelse
             </div>
-            
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+        </section>
+
+        <!-- SECTION: HISTORY -->
+        <section id="section-history" class="tab-content hidden">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Riwayat & Laporan</h2>
+                    <p class="text-gray-500 font-medium tracking-tight">Cetak bukti transaksi dan pantau riwayat sewa Anda.</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="{{ route('renter.reports.history') }}" class="px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:bg-gray-50 transition shadow-sm">
+                        <i class="fas fa-file-pdf mr-2 text-red-500"></i> Generate Riwayat (PDF)
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-nexus overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-100">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Motor</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Periode</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Unit Motor</th>
+                            <th class="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Periode</th>
+                            <th class="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Biaya</th>
+                            <th class="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
+                            <th class="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200" id="rental-history-tbody">
-                        @foreach($myRentals as $rental)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                            <i class="fas fa-motorcycle text-gray-500"></i>
-                                        </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $rental->motor->brand }} {{ $rental->motor->type }}</div>
-                                        <div class="text-sm text-gray-500">{{ $rental->motor->license_plate }}</div>
-                                    </div>
-                                </div>
+                    <tbody class="divide-y divide-gray-100 bg-white">
+                        @foreach($myRentals as $r)
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                            <td class="px-8 py-6">
+                                <div class="font-bold text-gray-900">{{ $r->motor->brand }} {{ $r->motor->type }}</div>
+                                <div class="text-[10px] font-bold text-gray-400">{{ strtoupper($r->motor->license_plate) }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $rental->start_date->format('d/m/Y') }} - {{ $rental->end_date->format('d/m/Y') }}
-                                <div class="text-xs text-gray-500">{{ $rental->duration_days }} hari</div>
+                            <td class="px-8 py-6">
+                                <div class="text-xs font-bold text-gray-700">{{ $r->start_date->format('d/m/y') }} - {{ $r->end_date->format('d/m/y') }}</div>
+                                <div class="text-[10px] text-gray-400 font-bold uppercase">{{ $r->duration_days }} HARI</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                Rp {{ number_format($rental->total_amount, 0, ',', '.') }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $rental->status_badge }}">
-                                    {{ ucfirst(str_replace('_', ' ', $rental->status)) }}
+                            <td class="px-8 py-6 font-bold text-gray-900">Rp {{ number_format($r->total_amount, 0, ',', '.') }}</td>
+                            <td class="px-8 py-6">
+                                <span class="status-pill {{ $r->status == 'completed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
+                                    {{ str_replace('_', ' ', $r->status) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('renter.rentals.show', $rental) }}" class="text-blue-600 hover:text-blue-900">Detail</a>
+                            <td class="px-8 py-6">
+                                <a href="{{ route('renter.rentals.show', $r) }}" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye"></i></a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
 
-        <!-- Payment Status Section -->
-        <div id="payments-section" class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200" style="display: none;">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Status Pembayaran</h2>
-            
-            <div class="space-y-4">
-                @foreach($myRentals->where('status', 'pending_payment') as $rental)
-                <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-r-lg">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-semibold text-gray-900">{{ $rental->motor->brand }} {{ $rental->motor->type }}</h3>
-                            <p class="text-gray-600 text-sm">Menunggu pembayaran sebesar Rp {{ number_format($rental->total_amount, 0, ',', '.') }}</p>
-                            <p class="text-gray-500 text-xs mt-1">Deadline: {{ $rental->created_at->addDays(1)->format('d M Y, H:i') }}</p>
+        <!-- SECTION: PAYMENTS -->
+        <section id="section-payments" class="tab-content hidden">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-10">Pembayaran</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                @forelse($myRentals->where('status', 'pending_payment') as $p)
+                <div class="card-nexus p-8 bg-blue-50 border-blue-100 flex flex-col sm:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center text-left w-full">
+                        <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-blue-600 text-2xl mr-6 shadow-sm">
+                            <i class="fas fa-wallet"></i>
                         </div>
-                        <a href="{{ route('renter.payments.create', ['rental_id' => $rental->id]) }}" class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition">
-                            Bayar Sekarang
-                        </a>
+                        <div>
+                            <h4 class="text-xl font-black text-gray-900">{{ $p->motor->brand }} {{ $p->motor->type }}</h4>
+                            <div class="text-sm font-bold text-blue-600 mt-1">TOTAL: Rp {{ number_format($p->total_amount, 0, ',', '.') }}</div>
+                            <p class="text-[10px] text-gray-400 font-bold mt-2 uppercase">Klik bayar sekarang untuk konfirmasi</p>
+                        </div>
                     </div>
+                    <a href="{{ route('renter.payments.create', ['rental_id' => $p->id]) }}" class="whitespace-nowrap btn-action-primary text-xs tracking-widest uppercase">
+                        BAYAR SEKARANG
+                    </a>
                 </div>
-                @endforeach
-                
-                @if($myRentals->where('status', 'pending_payment')->count() == 0)
-                <div class="text-center py-8">
-                    <i class="fas fa-check-circle text-green-500 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">Semua Pembayaran Lunas</h3>
-                    <p class="text-gray-600">Tidak ada pembayaran yang tertunda saat ini.</p>
+                @empty
+                <div class="col-span-full card-nexus p-20 text-center text-gray-400 bg-white">
+                    <div class="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-check-double text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-1">Tagihan Lunas</h3>
+                    <p class="font-medium">Tidak ada pembayaran yang tertunda saat ini.</p>
                 </div>
-                @endif
+                @endforelse
             </div>
-        </div>
-    </div>
-</div>
+        </section>
 
-<!-- Rental Modal -->
-<div id="rental-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
-    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
-        <div class="mt-3">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium text-gray-900">Form Penyewaan Motor</h3>
-                <button onclick="closeRentalModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="modal-booking" class="fixed inset-0 bg-gray-900/60 backdrop-filter blur-sm hidden flex items-center justify-center z-[100] px-4">
+        <div class="bg-white w-full max-w-lg rounded-[32px] p-10 relative shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button onclick="closeBooking()" class="absolute top-8 right-8 text-gray-400 hover:text-gray-900 transition"><i class="fas fa-times text-xl"></i></button>
+            <div class="mb-8">
+                <h3 class="text-2xl font-black text-gray-900 mb-1">Formulir Penyewaan</h3>
+                <p class="text-xs font-bold text-blue-600 uppercase tracking-widest" id="modal-motor-title">NAMA MOTOR</p>
             </div>
             
-            <form id="rental-form" action="" method="POST">
+            <form id="form-rental" action="" method="POST" class="space-y-6">
                 @csrf
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai</label>
-                            <input type="date" name="start_date" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Selesai</label>
-                            <input type="date" name="end_date" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    </div>
-                    
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Paket Penyewaan</label>
-                        <select name="rental_package" id="rental-package" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="daily">Harian (Harga Normal)</option>
-                            <option value="weekly">Mingguan (Diskon 10%)</option>
-                            <option value="monthly">Bulanan (Diskon 20%)</option>
-                        </select>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Mulai Sewa</label>
+                        <input type="date" name="start_date" id="start_date" required onchange="calculate()" class="w-full bg-gray-50 border-none rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Tambahan</label>
-                        <textarea name="notes" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Catatan khusus untuk penyewaan ini (opsional)"></textarea>
-                    </div>
-                    
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <h4 class="font-medium text-gray-900 mb-2">Ringkasan Pembayaran</h4>
-                        <div class="space-y-1 text-sm">
-                            <div class="flex justify-between">
-                                <span>Harga per hari:</span>
-                                <span id="daily-price">-</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Durasi:</span>
-                                <span id="duration">-</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Subtotal:</span>
-                                <span id="subtotal">-</span>
-                            </div>
-                            <div class="flex justify-between text-green-600">
-                                <span>Diskon:</span>
-                                <span id="discount">-</span>
-                            </div>
-                            <hr class="my-2">
-                            <div class="flex justify-between font-bold">
-                                <span>Total:</span>
-                                <span id="total-amount">-</span>
-                            </div>
-                        </div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Selesai Sewa</label>
+                        <input type="date" name="end_date" id="end_date" required onchange="calculate()" class="w-full bg-gray-50 border-none rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
                 
-                <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button" onclick="closeRentalModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                        Buat Pesanan
-                    </button>
+                <div class="bg-gray-50 rounded-2xl p-6 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-gray-400 uppercase">Subtotal</span>
+                        <span class="text-sm font-black text-gray-900" id="calc-subtotal">-</span>
+                    </div>
+                    <div class="pt-3 border-t border-gray-100 flex justify-between items-center">
+                        <span class="text-sm font-black text-gray-900 uppercase">Estimasi Total</span>
+                        <span class="text-xl font-extrabold text-blue-600" id="calc-total">Rp 0</span>
+                    </div>
                 </div>
+
+                <button type="submit" class="w-full btn-action-primary uppercase tracking-widest py-5 font-black">
+                    KONFIRMASI BOOKING SEKARANG
+                </button>
             </form>
         </div>
     </div>
-</div>
 
-    </div>
-</div>
+    <script>
+        let currentDailyPrice = 0;
 
-<script>
-// Show/Hide Sections
-function showBrowseMotors() {
-    hideAllSections();
-    document.getElementById('browse-section').style.display = 'block';
-}
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            // Remove active classes from all sidebar links
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
 
-function showRentalPackages() {
-    hideAllSections();
-    document.getElementById('packages-section').style.display = 'block';
-}
-
-function showRentalHistory() {
-    hideAllSections();
-    document.getElementById('history-section').style.display = 'block';
-}
-
-function showPaymentStatus() {
-    hideAllSections();
-    document.getElementById('payments-section').style.display = 'block';
-}
-
-function hideAllSections() {
-    document.getElementById('browse-section').style.display = 'none';
-    document.getElementById('packages-section').style.display = 'none';
-    document.getElementById('history-section').style.display = 'none';
-    document.getElementById('payments-section').style.display = 'none';
-}
-
-// Motor Filtering
-function resetFilters() {
-    document.getElementById('brand-filter').value = '';
-    document.getElementById('cc-filter').value = '';
-    document.getElementById('price-filter').value = '';
-    filterMotors();
-}
-
-function filterMotors() {
-    const brandFilter = document.getElementById('brand-filter').value.toLowerCase();
-    const ccFilter = document.getElementById('cc-filter').value.toLowerCase();
-    const priceFilter = parseFloat(document.getElementById('price-filter').value) || Infinity;
-    
-    const motorCards = document.querySelectorAll('.motor-card');
-    
-    motorCards.forEach(card => {
-        const brand = card.getAttribute('data-brand').toLowerCase();
-        const type = card.getAttribute('data-type').toLowerCase();
-        const price = parseFloat(card.getAttribute('data-price'));
-        
-        const brandMatch = !brandFilter || brand.includes(brandFilter);
-        const ccMatch = !ccFilter || type.includes(ccFilter);
-        const priceMatch = price <= priceFilter;
-        
-        if (brandMatch && ccMatch && priceMatch) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
+            // Show selected tab content
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            // Add active class to selected sidebar link
+            document.getElementById('tab-' + tabId).classList.add('active');
         }
-    });
-}
 
-// Add event listeners for filters
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('brand-filter').addEventListener('change', filterMotors);
-    document.getElementById('cc-filter').addEventListener('change', filterMotors);
-    document.getElementById('price-filter').addEventListener('input', filterMotors);
-});
-
-// Rental Modal
-function openRentalModal(motorId) {
-    document.getElementById('rental-modal').classList.remove('hidden');
-    const form = document.getElementById('rental-form');
-    form.action = `/renter/motors/${motorId}/rent`;
-    
-    // Set minimum date to today
-    const today = new Date().toISOString().split('T')[0];
-    form.querySelector('input[name="start_date"]').min = today;
-    form.querySelector('input[name="end_date"]').min = today;
-    
-    // Set default start date to today
-    form.querySelector('input[name="start_date"]').value = today;
-}
-
-function closeRentalModal() {
-    document.getElementById('rental-modal').classList.add('hidden');
-}
-
-// Calculate rental costs
-function calculateRentalCost() {
-    const startDate = new Date(document.querySelector('input[name="start_date"]').value);
-    const endDate = new Date(document.querySelector('input[name="end_date"]').value);
-    const package = document.getElementById('rental-package').value;
-    
-    if (startDate && endDate && startDate < endDate) {
-        const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-        const dailyPrice = 75000; // This should be dynamic based on selected motor
-        
-        let discount = 0;
-        if (package === 'weekly' && days >= 7) {
-            discount = 0.1;
-        } else if (package === 'monthly' && days >= 30) {
-            discount = 0.2;
+        function openBooking(id, title, price) {
+            currentDailyPrice = price;
+            document.getElementById('modal-motor-title').innerText = title;
+            document.getElementById('form-rental').action = `/renter/motors/${id}/rent`;
+            document.getElementById('modal-booking').classList.remove('hidden');
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date(new Date().getTime() + 86400000).toISOString().split('T')[0];
+            document.getElementById('start_date').value = today;
+            document.getElementById('start_date').min = today;
+            document.getElementById('end_date').value = tomorrow;
+            document.getElementById('end_date').min = tomorrow;
+            calculate();
         }
-        
-        const subtotal = days * dailyPrice;
-        const discountAmount = subtotal * discount;
-        const total = subtotal - discountAmount;
-        
-        document.getElementById('daily-price').textContent = `Rp ${dailyPrice.toLocaleString()}`;
-        document.getElementById('duration').textContent = `${days} hari`;
-        document.getElementById('subtotal').textContent = `Rp ${subtotal.toLocaleString()}`;
-        document.getElementById('discount').textContent = discount > 0 ? `-Rp ${discountAmount.toLocaleString()}` : '-';
-        document.getElementById('total-amount').textContent = `Rp ${total.toLocaleString()}`;
-    }
-}
 
-// Add event listeners for rental calculation
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('input[name="start_date"]').addEventListener('change', calculateRentalCost);
-    document.querySelector('input[name="end_date"]').addEventListener('change', calculateRentalCost);
-    document.getElementById('rental-package').addEventListener('change', calculateRentalCost);
-    
-    // Initialize default view
-    showBrowseMotors();
-});
-
-// Close modal when clicking outside
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('rental-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeRentalModal();
+        function closeBooking() {
+            document.getElementById('modal-booking').classList.add('hidden');
         }
-    });
-});
-</script>
+
+        function calculate() {
+            const start = new Date(document.getElementById('start_date').value);
+            const end = new Date(document.getElementById('end_date').value);
+            
+            if(start && end && end > start) {
+                const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+                const total = days * currentDailyPrice;
+                document.getElementById('calc-subtotal').innerText = days + ' Hari';
+                document.getElementById('calc-total').innerText = 'Rp ' + total.toLocaleString();
+            } else {
+                document.getElementById('calc-total').innerText = 'Rp 0';
+            }
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal-booking');
+            if (event.target == modal) closeBooking();
+        }
+    </script>
 </body>
 </html>
