@@ -6,29 +6,82 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Pilih Motor - RentMotor</title>
     
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+        }
+
+        .bg-mesh {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(210,100%,94%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,100%,94%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(210,100%,94%,1) 0, transparent 50%);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-mesh min-h-screen text-gray-800">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg">
+    <nav class="glass-nav sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-20">
                 <div class="flex items-center">
-                    <a href="{{ route('renter.dashboard') }}" class="text-2xl font-bold text-green-600">
-                        🏍️ RentMotor
+                    <a href="{{ url('/') }}" class="flex items-center space-x-2">
+                        <div class="bg-blue-600 p-2 rounded-lg">
+                            <i class="fas fa-motorcycle text-white text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-black text-gray-900 tracking-tighter">RENTMOTOR</span>
                     </a>
-                    <div class="ml-10 flex space-x-8">
-                        <a href="{{ route('renter.dashboard') }}" class="text-gray-500 hover:text-gray-700 px-1 pt-1 text-sm font-medium">Dashboard</a>
-                        <a href="{{ route('renter.motors.index') }}" class="text-green-600 border-b-2 border-green-600 px-1 pt-1 text-sm font-medium">Pilih Motor</a>
-                        <a href="{{ route('renter.rentals.index') }}" class="text-gray-500 hover:text-gray-700 px-1 pt-1 text-sm font-medium">Penyewaan Saya</a>
-                        <a href="{{ route('renter.payments.index') }}" class="text-gray-500 hover:text-gray-700 px-1 pt-1 text-sm font-medium">Pembayaran</a>
-                    </div>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
-                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">PENYEWA</span>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url('/') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Beranda</a>
+                    <a href="{{ route('renter.motors.index') }}" class="text-blue-600 font-bold transition">Koleksi Motor</a>
+                    <a href="{{ route('about') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Tentang Kami</a>
+                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Kontak</a>
+                    <a href="{{ route('renter.rentals.index') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Penyewaan Saya</a>
+                    <a href="{{ route('renter.payments.index') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Pembayaran</a>
+                    
+                    <div class="flex items-center space-x-3 border-l pl-6 border-gray-200">
+                        <div class="text-right hidden lg:block">
+                            <div class="text-sm font-bold text-gray-900">{{ Auth::user()->name }}</div>
+                            <div class="text-xs text-blue-600">Penyewa</div>
+                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="bg-gray-100 p-2 rounded-full text-gray-500 hover:bg-red-50 hover:text-red-600 transition" title="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <a href="{{ route('renter.dashboard') }}" class="p-2 text-gray-600">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </a>
                 </div>
             </div>
         </div>

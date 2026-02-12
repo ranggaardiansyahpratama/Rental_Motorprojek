@@ -23,6 +23,31 @@ Route::get('/', function () {
     return view('welcome', compact('availableMotors'));
 });
 
+// Public pages
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+Route::post('/contact', function (\Illuminate\Http\Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'required|string|max:20',
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ]);
+    
+    // Here you can add logic to send email or save to database
+    // For now, we'll just return with a success message
+    
+    return back()->with('success', 'Terima kasih! Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.');
+})->name('contact.submit');
+
+
 Route::get('/dashboard', function () {
     $user = auth()->user();
     

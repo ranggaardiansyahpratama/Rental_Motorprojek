@@ -88,10 +88,9 @@
                 
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#koleksi" class="text-gray-600 hover:text-blue-600 font-medium transition">Koleksi Motor</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition">Tentang Kami</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition">Kontak</a>
+                    <a href="{{ route('about') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Tentang Kami</a>
+                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Kontak</a>
                     
-                    <a href="{{ route('register') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">Register</a>
                     <a href="{{ route('login') }}" class="btn-primary px-6 py-2.5 rounded-xl text-white font-bold text-sm shadow-md">
                         Login Sekarang
                     </a>
@@ -162,16 +161,7 @@
                         </div>
                     </div>
                     
-                    <!-- Floating Badge -->
-                    <div class="absolute -right-10 top-1/2 bg-white p-4 rounded-2xl shadow-xl border border-gray-50 flex items-center space-x-3 max-w-xs animate-bounce">
-                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
-                            <i class="fas fa-shield-alt text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold text-sm">Asuransi Full</p>
-                            <p class="text-xs text-gray-500">Perjalanan lebih tenang</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

@@ -95,12 +95,27 @@
                         {{ $user->created_at->format('d M Y') }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        <div class="flex justify-center space-x-3 text-sm">
-                            <a href="{{ route('admin.users.show', $user) }}" class="text-blue-500 hover:text-blue-700"><i class="fas fa-eye"></i></a>
-                            <a href="{{ route('admin.users.edit', $user) }}" class="text-green-500 hover:text-green-700"><i class="fas fa-edit"></i></a>
-                            @if($user->id !== auth()->id())
-                            <button onclick="deleteUser({{ $user->id }})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
-                            @endif
+                        <div class="relative inline-block text-left">
+                            <button onclick="toggleDropdown('dropdown-{{ $user->id }}', event)" class="p-2 text-gray-500 hover:text-blue-600 focus:outline-none rounded-full hover:bg-gray-100 transition">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div id="dropdown-{{ $user->id }}" class="hidden absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg z-50 border border-gray-100 overflow-hidden transform origin-top-right transition-all">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.users.show', $user) }}" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                                        <i class="fas fa-eye w-5"></i> Detail
+                                    </a>
+                                    <a href="{{ route('admin.users.edit', $user) }}" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition">
+                                        <i class="fas fa-edit w-5"></i> Edit
+                                    </a>
+                                    @if($user->id !== auth()->id())
+                                    <button onclick="deleteUser({{ $user->id }})" class="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition text-left">
+                                        <i class="fas fa-trash w-5"></i> Hapus
+                                    </button>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -116,6 +131,31 @@
 </div>
 
 <script>
+function toggleDropdown(id, event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById(id);
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    // Close all other dropdowns
+    document.querySelectorAll('[id^="dropdown-"]').forEach(el => {
+        el.classList.add('hidden');
+    });
+
+    // Toggle current
+    if (isHidden) {
+        dropdown.classList.remove('hidden');
+    }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.relative')) {
+        document.querySelectorAll('[id^="dropdown-"]').forEach(el => {
+            el.classList.add('hidden');
+        });
+    }
+});
+
 function deleteUser(id) {
     if(confirm('Hapus pengguna ini?')) {
         let form = document.createElement('form');
